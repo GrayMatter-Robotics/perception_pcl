@@ -34,7 +34,7 @@ include_directories(
 )
 
 install(DIRECTORY include/
-  DESTINATION include/${PROJECT_NAME}
+  DESTINATION include
 )
 
 # Add gtest based cpp test target
@@ -49,7 +49,17 @@ if(BUILD_TESTING)
 endif()
 
 # Export old-style CMake variables
-ament_export_include_directories("include/${PROJECT_NAME}")
+ament_export_include_directories(include)
 
 ament_export_dependencies(${dependencies} PCL)
 ament_package()
+
+set(CPACK_GENERATOR "DEB")
+set(ROS_DISTRO "humble")
+set(CPACK_PACKAGE_NAME "ros-${ROS_DISTRO}-pcl-conversions-gmr")
+set(CPACK_PACKAGE_VERSION_MAJOR "2")
+set(CPACK_PACKAGE_VERSION_MINOR "4")
+set(CPACK_PACKAGE_VERSION_PATCH "5")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "gmrpcl-${ROS_DISTRO}, ros-${ROS_DISTRO}-pcl-msgs, ros-${ROS_DISTRO}-tf2-eigen")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "GrayMatter Robotics") #required
+INCLUDE(CPack)

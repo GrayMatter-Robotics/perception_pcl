@@ -36,7 +36,7 @@ set(dependencies
 )
 
 ## Declare the pcl_ros_tf library
-add_library(pcl_ros_tf src/transforms.cpp)
+add_library(pcl_ros_tf SHARED src/transforms.cpp)
 target_include_directories(pcl_ros_tf PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
@@ -175,7 +175,7 @@ endif()
 
 install(
   DIRECTORY include/
-  DESTINATION include/${PROJECT_NAME}
+  DESTINATION include
 )
 
 install(
@@ -201,7 +201,7 @@ install(DIRECTORY plugins samples
   DESTINATION share/${PROJECT_NAME})
 
 # Export old-style CMake variables
-ament_export_include_directories("include/${PROJECT_NAME}")
+ament_export_include_directories(include)
 ament_export_libraries(pcl_ros_tf)
 
 # Export modern CMake targets
@@ -210,3 +210,13 @@ ament_export_targets(export_pcl_ros HAS_LIBRARY_TARGET)
 ament_export_dependencies(${dependencies})
 
 ament_package()
+
+set(CPACK_GENERATOR "DEB")
+set(ROS_DISTRO "humble")
+set(CPACK_PACKAGE_NAME "ros-${ROS_DISTRO}-pcl-ros-gmr")
+set(CPACK_PACKAGE_VERSION_MAJOR "2")
+set(CPACK_PACKAGE_VERSION_MINOR "4")
+set(CPACK_PACKAGE_VERSION_PATCH "5")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "ros-${ROS_DISTRO}-pcl-conversions-gmr, gmrpcl-${ROS_DISTRO}, ros-${ROS_DISTRO}-pcl-msgs, ros-${ROS_DISTRO}-tf2-eigen")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "GrayMatter Robotics") #required
+INCLUDE(CPack)
